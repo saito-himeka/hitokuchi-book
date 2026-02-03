@@ -1,0 +1,1363 @@
+/* 1. 土台：目に優しい背景色と読みやすいフォント */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+    background-color: #fcfaf5;
+    /* ほんのり温かい白（アイボリー系） */
+    color: #333;
+    /* 文字は真っ黒にせず少し浮かせる */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* bodyのスクロールを止めるためのクラス */
+body.no-scroll {
+    overflow: hidden;
+    height: 100%;
+}
+
+/* ヘッダー */
+.header {
+    display: flex;
+    background-color: #fff;
+    padding: 20px 40px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    /* 影も「あるかないか」程度に */
+}
+
+.header-inner {
+    max-width: 90%;
+    width: 1000px;
+    /* 最大幅 */
+    margin: 0 auto;
+    /* 中央寄せ */
+    display: flex;
+    justify-content: space-between;
+    /* ★これで左右に分かれます */
+    align-items: center;
+    /* 上下中央 */
+    padding: 0 20px;
+    /* 左右の余白 */
+}
+
+
+/* ロゴとテキストを横並びにする */
+.header-logo {
+    display: flex;
+    align-items: center;
+    /* 上下中央に揃える */
+    gap: 10px;
+    /* アイコンと文字の間の余白 */
+}
+
+/* アイコンのサイズ調整 */
+.logo-icon {
+    height: 32px;
+    /* 文字の大きさに合わせて調整 */
+    width: auto;
+    /* 比率を維持 */
+}
+
+.brand-name {
+    margin: 0;
+    /* デフォルトの余白を消す */
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #5d5d5d;
+}
+
+/* 右側：ナビゲーション */
+.main-nav {
+    display: flex;
+    gap: 20px;
+    /* リンク同士の間隔 */
+    align-items: center;
+}
+
+.main-nav a {
+    text-decoration: none;
+    color: #666;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.main-nav a:hover {
+    color: #8e9775;
+}
+
+/* ログアウトボタン（formを消してaタグに見せている場合） */
+.main-nav a[onclick] {
+    cursor: pointer;
+}
+
+/* --- ヘッダー関連の整理（ここまで） --- */
+
+/*フッター*/
+/* フッター全体の土台 */
+.footer {
+    background-color: #fff;
+    /* ヘッダーと同じ白 */
+    padding: 30px 0;
+    margin-top: auto;
+    /* コンテンツが少なくても下に配置されるように */
+    border-top: 1px solid #f0f0f0;
+}
+
+/* フッターナビゲーションのスタイル */
+.footer-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 30px 0;
+}
+
+.footer-nav {
+    display: flex;
+    gap: 20px;
+}
+
+.footer-nav a {
+    color: #8e9775;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: opacity 0.3s;
+}
+
+.footer-nav a:hover {
+    opacity: 0.7;
+}
+
+.copyright {
+    color: #999;
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+/* 秘密の入り口（案1：範囲選択で見えるタイプ） */
+.secret-entrance {
+    position: absolute;
+    right: 20px;
+    bottom: -10px;
+    /* 少しずらして、さらに見つけにくく */
+}
+
+.secret-entrance a {
+    color: #fff;
+    /* 背景（白）と完全に同化 */
+    text-decoration: none;
+    font-size: 0.7rem;
+    cursor: default;
+    /* マウスを乗せても「指マーク」にしない */
+    user-select: text;
+    /* 範囲選択はできるようにする */
+}
+
+/* 範囲選択（マウスでなぞった時）だけ浮き上がる */
+.secret-entrance a::selection {
+    background-color: #8e9775;
+    color: #fff;
+}
+
+
+/* common.css */
+
+/* 2カラムを包む親要素 */
+.container-flex {
+    display: flex;
+    gap: 40px;
+    /* メインとサイドバーの間の余白 */
+    align-items: flex-start;
+}
+
+/* メインエリア */
+.main-primary {
+    flex: 1;
+    /* 残りの幅をすべて使う */
+    min-width: 0;
+    /* はみ出し防止 */
+}
+
+/* サイドバー本体 */
+.sidebar {
+    width: 280px;
+    flex-shrink: 0;
+    /* 幅を固定 */
+}
+
+/* ウィジェット（サイドバー内の各ブロック） */
+.sidebar-widget {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+.widget-title {
+    font-size: 1.1rem;
+    color: #8e9775;
+    border-bottom: 2px solid #fcfaf5;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.sidebar-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-list li {
+    margin-bottom: 10px;
+}
+
+.sidebar-list a {
+    color: #666;
+    font-size: 0.95rem;
+    transition: color 0.3s;
+}
+
+.sidebar-list a:hover {
+    color: #8e9775;
+}
+
+/* 全体幅の制限を解除・調整 */
+.main-content {
+    max-width: 1100px;
+    /* 600pxから大幅に広げる */
+    width: 95%;
+    margin: 40px auto;
+}
+
+/* スマホでは縦並びにする */
+@media (max-width: 900px) {
+    .container-flex {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
+}
+
+.ad-space {
+    background: #f0f0f0 !important;
+    /* 広告枠だとわかりやすく少し色を変える */
+    text-align: center;
+    border: 1px dashed #ccc;
+}
+
+.ad-label {
+    font-size: 0.7rem;
+    color: #999;
+    margin-bottom: 10px;
+}
+
+.ad-placeholder {
+    height: 250px;
+    /* 一般的な広告サイズ(レクタングル) */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #bbb;
+}
+
+.profile-area {
+    text-align: left;
+}
+
+/* 画像と名前を横並びにする */
+.profile-header {
+    display: flex;
+    align-items: center;
+    /* 上下中央揃え */
+    gap: 15px;
+    /* 画像と名前の間の余白 */
+    margin-bottom: 15px;
+}
+
+.profile-thumb {
+    width: 60px;
+    /* 横並びなので少しサイズを調整 */
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #8e9775;
+    flex-shrink: 0;
+    /* 画像が潰れないように固定 */
+}
+
+.profile-name {
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+    /* 余計な余白を消す */
+    font-size: 1rem;
+}
+
+.widget-text {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #666;
+    margin: 0;
+}
+
+/* 3. 内側のパーツ：角を丸く、線を細く */
+.auth-content {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    /* 角をしっかり丸める */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+.page-title {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+    color: #4a4a4a;
+}
+
+/* 入力フォームもやわらかく */
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #fafafa;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    background-color: #8e9775;
+    /* くすみグリーンなど、自然な色 */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #7a8265;
+}
+
+/* 検索セクション */
+.search-section {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+/* 検索フォーム全体のコンテナ */
+.search-form {
+    max-width: 500px;
+    margin: 0 auto 40px;
+    display: flex;
+    gap: 10px;
+}
+
+/* 入力フィールド */
+.search-input {
+    flex: 1;
+    padding: 12px 20px;
+    border: 2px solid #e8eadd;
+    /* 優しいグリーングレー */
+    border-radius: 30px;
+    /* 楕円のような丸み */
+    font-size: 0.95rem;
+    outline: none;
+    transition: all 0.3s ease;
+    background-color: #fff;
+}
+
+/* 入力中に色を変える */
+.search-input:focus {
+    border-color: #8e9775;
+    box-shadow: 0 0 8px rgba(142, 151, 117, 0.2);
+    background-color: #fcfaf5;
+}
+
+/* 検索ボタン */
+.search-button {
+    padding: 0 25px;
+    background-color: #8e9775;
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    /* 入力欄と合わせる */
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.3s;
+}
+
+.search-button:hover {
+    background-color: #7a8463;
+    transform: scale(1.05);
+    /* 軽くポヨンと大きく */
+}
+
+/* ジャンルリスト */
+.genre-list {
+    display: flex;
+    flex-wrap: wrap;
+    /* 折り返しを許可 */
+    gap: 15px;
+    justify-content: center;
+}
+
+.genre-item {
+    padding: 10px 20px;
+    background-color: #fff;
+    border: 1px solid #8e9775;
+    color: #8e9775;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.genre-item:hover {
+    background-color: #8e9775;
+    color: #fff;
+}
+
+/* おすすめセクション全体の余白 */
+.recommend-section {
+    margin-top: 60px;
+}
+
+.section-title {
+    text-align: center;
+    color: #5d5d5d;
+    margin-bottom: 30px;
+}
+
+/* 本を並べる棚（グリッド） */
+.product-grid {
+    display: grid;
+    /* 画面幅に合わせて自動で列数を調整する魔法の1行 */
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 30px;
+    padding: 20px 0;
+}
+
+/* 本のカード単体 */
+.product-card {
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    /* 画像の角を丸めるため */
+    transition: transform 0.3s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    /* 少し浮き上がる演出 */
+}
+
+/* 画像エリア */
+.product-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* テキストエリア */
+.product-info {
+    padding: 15px;
+}
+
+.product-title {
+    font-weight: bold;
+    font-size: 1rem;
+    margin: 0 0 5px 0;
+    color: #333;
+}
+
+.product-author {
+    font-size: 0.85rem;
+    color: #777;
+    margin-bottom: 10px;
+}
+
+.product-price {
+    color: #8e9775;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* バッジ（左上に浮かせる） */
+.product-image {
+    position: relative;
+    overflow: hidden;
+}
+
+.badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: rgba(142, 151, 117, 0.9);
+    /* さっきのグリーン */
+    color: #fff;
+    padding: 4px 10px;
+    font-size: 0.7rem;
+    border-radius: 20px;
+    z-index: 10;
+}
+
+/* キャッチコピー */
+.product-catch {
+    font-size: 0.8rem;
+    color: #8e9775;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* 続きを読むボタン（やわらかいボタン） */
+.read-more {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    padding: 8px;
+    background-color: #f0f0f0;
+    color: #555;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    transition: 0.3s;
+}
+
+.read-more:hover {
+    background-color: #e0e0e0;
+}
+
+/* 0件メッセージのスタイル */
+.no-results {
+    grid-column: 1 / -1;
+    /* グリッド全体を使って中央に寄せる */
+    text-align: center;
+    padding: 60px 20px;
+    background: #fcfaf5;
+    border-radius: 15px;
+    border: 1px dashed #8e9775;
+    margin: 20px 0;
+}
+
+.no-results-text {
+    color: #666;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+.back-to-top {
+    display: inline-block;
+    color: #8e9775;
+    text-decoration: none;
+    font-weight: bold;
+    border-bottom: 2px solid #8e9775;
+    transition: opacity 0.3s;
+}
+
+.back-to-top:hover {
+    opacity: 0.7;
+}
+
+/* 詳細ページ全体のデザイン */
+/* 詳細ページのヘッダー部分を横並びに */
+.post-header-flex {
+    display: flex;
+    gap: 30px;
+    /* 表紙とテキストの間の距離 */
+    align-items: flex-start;
+    /* 上端で揃える */
+    margin-bottom: 40px;
+}
+
+/* 表紙画像のサイズ固定 */
+.book-cover-small {
+    flex-shrink: 0;
+    /* 画像が潰れないように固定 */
+}
+
+.book-cover-small img {
+    width: 140px;
+    /* お好みのサイズに調整してください */
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* 右側のテキスト部分 */
+.post-meta {
+    flex: 1;
+    /* 残りの幅をすべて使う */
+}
+
+.post-title {
+    margin: 10px 0;
+    font-size: 1.8rem;
+    line-height: 1.4;
+    color: #333;
+}
+
+/* スマホで見るときは縦並びに戻す（レスポンシブ対応） */
+@media (max-width: 600px) {
+    .post-header-flex {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+}
+
+
+.post-detail {
+    background-color: #fff;
+    padding: 60px 40px;
+    border-radius: 15px;
+    max-width: 800px;
+    /* 読みやすさを考慮して少し狭める */
+    margin: 40px auto;
+}
+
+/* 3行まとめボックス */
+.summary-box {
+    background-color: #fcfaf5;
+    border-left: 5px solid #8e9775;
+    padding: 20px;
+    margin: 30px 0;
+}
+
+.summary-box h3 {
+    margin-top: 0;
+    font-size: 1.1rem;
+    color: #8e9775;
+}
+
+/* 図解画像の設定 */
+.infographic-container img,
+.sub-visual img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.visual-summary {
+    margin: 50px 0;
+    text-align: center;
+}
+
+/* アフィリエイトボタン */
+/* CTAボックス全体の装飾 */
+.cta-box {
+    background-color: #fcfaf5;
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    margin-top: 60px;
+    border: 1px solid #eee;
+}
+
+.cta-text {
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+/* Amazon公式風ボタン */
+.amazon-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to bottom, #f7dfa1, #f0c14b);
+    /* Amazon特有のグラデーション */
+    border: 1px solid #a88734;
+    border-color: #a88734 #9c7e31 #846a29;
+    color: #111 !important;
+    /* 文字色は黒に近い色 */
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset;
+    transition: all 0.2s ease;
+}
+
+.amazon-button:hover {
+    background: linear-gradient(to bottom, #f5d78e, #eeb933);
+    border-color: #a88734;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+}
+
+.amazon-button:active {
+    background: #f0c14b;
+    /* 押した瞬間はグラデーションを消して「沈んだ」感を出す */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) inset;
+    transform: translateY(1px);
+}
+
+/* 左側の簡易アイコン */
+.amazon-icon {
+    font-weight: bold;
+    margin-right: 10px;
+    background: #111;
+    color: #f0c14b;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    line-height: 1;
+}
+
+.btn-amazon {
+    display: inline-block;
+    background-color: #ff9900;
+    /* Amazonカラー */
+    color: white;
+    padding: 12px 24px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin: 10px;
+    font-weight: bold;
+}
+
+/* リンクのデフォルトスタイルをリセット */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* 「要約と図解を見る」ボタンをもっと魅力的に */
+.read-more {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #8e9775;
+    /* ロゴに合わせた色 */
+    color: #fff !important;
+    /* 文字を白に固定 */
+    border-radius: 25px;
+    /* やわらかい丸み */
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.read-more:hover {
+    background-color: #7a8265;
+    transform: translateY(-2px);
+    /* 浮き上がる演出 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* フォームのラベル */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #5d5d5d;
+    font-size: 0.9rem;
+}
+
+/* テキストエリアの調整 */
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #fafafa;
+    font-family: inherit;
+    resize: vertical;
+    /* 縦方向にのみ広げられる */
+}
+
+/* 図解画像のホバー設定 */
+.zoomable-image {
+    cursor: zoom-in;
+    transition: opacity 0.3s;
+}
+
+.zoomable-image:hover {
+    opacity: 0.9;
+}
+
+.zoom-hint {
+    font-size: 0.8rem;
+    color: #999;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* ライトボックス背景 */
+.image-overlay {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    cursor: zoom-out;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.2s;
+}
+
+#enlargedImage {
+    max-width: 95%;
+    max-height: 95%;
+    object-fit: contain;
+    border-radius: 4px;
+}
+
+.close-overlay {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+/* 管理用アクションエリア */
+.admin-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.btn-edit {
+    background-color: #f0f0f0;
+    color: #555;
+    padding: 8px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.btn-delete {
+    background-color: #ffeded;
+    color: #e3342f;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.btn-delete:hover {
+    background-color: #fee2e2;
+}
+
+/* ヘッダー全体のスタイル */
+.site-header {
+    background-color: #ffffff;
+    padding: 20px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 40px;
+}
+
+.header-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    /* ロゴとナビを両端に */
+    align-items: center;
+    padding: 0 20px;
+}
+
+.site-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #8e9775;
+    /* テーマカラー */
+    text-decoration: none;
+}
+
+/*お問い合わせフォーム*/
+.contact-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.contact-intro {
+    text-align: center;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.contact-form {
+    background: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.submit-button {
+    width: 100%;
+    padding: 14px;
+    background-color: #8e9775;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.submit-button:hover {
+    background-color: #7a8364;
+}
+
+.alert-success {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/*お問合せ管理画面*/
+/* お問い合わせ一覧だけさらにフルワイドにする場合 */
+.contact-admin-list {
+    max-width: 98% !important;
+}
+
+.admin-container {
+    max-width: 95%;
+    /* 600pxや1000pxから、画面幅いっぱいに近く広げる */
+    margin: 20px auto;
+    /* 上下の余白も少し詰める */
+    padding: 0 10px;
+    /* 左右の余白を最小限に */
+}
+
+.admin-title {
+    color: #555;
+    margin-bottom: 20px;
+    border-left: 5px solid #8e9775;
+    padding-left: 15px;
+}
+
+.admin-table-wrapper {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    overflow-x: auto;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 10px 8px;
+    /* セル内の余白をギュッと凝縮 */
+    font-size: 0.85rem;
+    /* 少し小さくして一覧性をアップ */
+}
+
+.admin-table th {
+    background: #f8f9fa;
+    color: #666;
+}
+
+.contact-msg {
+    max-width: none;
+    /* 幅制限を解除 */
+    min-width: 300px;
+    /* 最低限の幅は確保 */
+    word-break: break-all;
+    /* 長い英数字でも強制改行して枠を維持 */
+}
+
+.admin-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    /* 横に突き出た場合にスクロールを出す */
+    -webkit-overflow-scrolling: touch;
+    /* スマホでのスクロールを滑らかに */
+    border: 1px solid #ddd;
+}
+
+.btn-delete-small {
+    background: #e57373;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+/* 管理者ログイン時、かつ管理用コンテナが含まれる場合は幅制限を解除する */
+.main-content.is-admin {
+    max-width: 1200px;
+    /* 管理画面全体の最大幅を広げる（お好みで 100% でも可） */
+    width: 95%;
+    /* 左右に少しだけ遊びを作る */
+}
+
+/* さらにお問い合わせ一覧ページ専用の調整 */
+.contact-admin-list {
+    max-width: 100% !important;
+    /* コンテナ自体の制限も完全に外す */
+}
+
+/* テーブルの文字が詰まりすぎないよう調整 */
+.admin-table-wrapper {
+    margin-top: 20px;
+}
+
+/* --- ハンバーガーメニュー関連 --- */
+
+/* PCではボタンを隠す */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 20px;
+    cursor: pointer;
+    z-index: 9999;
+}
+
+.hamburger span {
+    width: 100%;
+    height: 2px;
+    background-color: #8e9775;
+    transition: all 0.3s;
+}
+
+/* スマホメニュー本体 */
+.mobile-menu {
+    position: fixed;
+    top: -120%;
+    /* 最初は画面の上に隠す */
+    left: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.98);
+    padding: 100px 40px 40px;
+    transition: top 0.4s ease;
+    /* ふわっと動く設定 */
+    z-index: 9998;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    visibility: hidden;
+}
+
+/* メニューが開いた時 */
+.mobile-menu.active {
+    top: 0;
+    visibility: visible;
+}
+
+
+
+/* メニュー内の項目差別化 */
+
+/* 1. 「ホーム」「お問い合わせ」などのメインリンク */
+.mobile-menu ul li a {
+    font-size: 1.1rem;
+    /* 少し大きく */
+    font-weight: bold;
+    /* 太字に */
+    color: #333;
+    display: block;
+    padding: 10px 0;
+}
+
+/* 2. 「ジャンルから探す」というラベル */
+.menu-label {
+    font-size: 0.8rem;
+    color: #8e9775;
+    font-weight: bold;
+    margin-top: 20px;
+    /* 上に隙間を作って段落を分ける */
+    margin-bottom: 10px;
+    letter-spacing: 0.1em;
+    border-bottom: 2px solid #fcfaf5;
+    /* 下線をつけてセクション分け */
+    display: inline-block;
+}
+
+/* 3. ジャンル名のリンク */
+.genre-link {
+    font-size: 0.95rem !important;
+    /* メインリンクより少し小さく */
+    font-weight: normal !important;
+    /* 細くして差別化 */
+    color: #666 !important;
+    padding-left: 15px !important;
+    /* 少し右にずらして「階層」を作る */
+}
+
+/* 区切り線 */
+.menu-divider {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 20px 0;
+}
+
+/* レスポンシブ切り替え */
+@media (max-width: 900px) {
+    .pc-only {
+        display: none;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+
+    /* スマホではサイドバーを非表示にする（メニューと重複するため） */
+    .sidebar {
+        display: none;
+    }
+}
+
+/* ハンバーガーボタンが「×」に変わるアニメーション */
+.hamburger.active span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+}
+
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+}
+
+/* 最新の投稿リスト */
+.latest-posts {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.latest-posts li {
+    margin-bottom: 15px;
+    border-bottom: 1px solid #fcfaf5;
+    padding-bottom: 15px;
+}
+
+.latest-posts li:last-child {
+    margin-bottom: 0;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.latest-post-item {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    text-decoration: none;
+    transition: opacity 0.3s;
+}
+
+.latest-post-item:hover {
+    opacity: 0.7;
+}
+
+/* サムネイル画像 */
+.latest-post-thumb {
+    width: 50px;
+    height: 70px;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.latest-post-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 記事情報 */
+.latest-post-info {
+    flex: 1;
+}
+
+.latest-post-title {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #444;
+    line-height: 1.4;
+    margin: 0 0 5px 0;
+    /* 2行以上の場合は省略記号を出す（任意） */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.latest-post-date {
+    font-size: 0.75rem;
+    color: #999;
+}
+
+/* ページネーション全体の囲い */
+.pagination-wrapper {
+    margin: 50px 0;
+    display: flex;
+    justify-content: center;
+}
+
+/* Laravelのデフォルトリンク（Tailwind CSS等）が干渉しないようシンプルに */
+.pagination-wrapper nav {
+    display: flex;
+    gap: 10px;
+}
+
+.pagination-wrapper svg {
+    width: 20px;
+    /* 矢印アイコンが巨大化するのを防ぐ */
+}
+
+/* ページ番号のボタンデザイン */
+.pagination-wrapper .relative {
+    display: inline-flex;
+    padding: 8px 16px;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    color: #8e9775;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.pagination-wrapper .active span {
+    background: #8e9775;
+    color: #fff;
+    border-color: #8e9775;
+}
+
+/* ページネーション全体の配置 */
+.pagination-wrapper {
+    margin: 50px 0;
+    display: flex;
+    justify-content: center;
+}
+
+/* 数字や矢印のボタン共通スタイル */
+.pagination-wrapper .pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    gap: 8px;
+}
+
+.pagination-wrapper .page-item .page-link {
+    display: block;
+    padding: 10px 18px;
+    background: #fff;
+    color: #8e9775;
+    border: 2px solid #e8eadd;
+    border-radius: 50%;
+    /* 丸いボタンにする */
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+/* マウスを置いたとき */
+.pagination-wrapper .page-item .page-link:hover {
+    background: #fcfaf5;
+    border-color: #8e9775;
+}
+
+/* 今見ているページの数字（アクティブ） */
+.pagination-wrapper .page-item.active .page-link {
+    background: #8e9775;
+    color: #fff;
+    border-color: #8e9775;
+}
+
+/* 無効なボタン（前へ、次へがない時） */
+.pagination-wrapper .page-item.disabled .page-link {
+    color: #ccc;
+    border-color: #f0f0f0;
+    cursor: not-allowed;
+}
+
+/*プライバシーポリシー*/
+.static-page {
+    background: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    line-height: 1.8;
+}
+
+.page-title {
+    color: #8e9775;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.policy-content h2 {
+    font-size: 1.2rem;
+    color: #333;
+    border-left: 4px solid #8e9775;
+    padding-left: 15px;
+    margin: 30px 0 15px;
+}
+
+.policy-content p {
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.update-date {
+    text-align: right;
+    margin-top: 50px;
+    font-size: 0.9rem;
+    color: #999;
+}
