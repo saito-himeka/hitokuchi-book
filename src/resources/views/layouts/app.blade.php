@@ -3,6 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:site_name" content="ひとくちbook" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ url()->current() }}" />
+    <meta property="og:title" content="@yield('title', 'ひとくちbook')" />
+    <meta property="og:description" content="本の要約を図解で分かりやすく紹介するサイトです。" />
+
+    <meta property="og:image" content="@yield('ogp_image', asset('img/ogp-banner.png'))" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="@yield('title', 'ひとくちbook')" />
+    <meta name="twitter:image" content="@yield('ogp_image', asset('img/ogp-banner.png'))" />
+
     <title>@yield('title', 'ひとくちbook')</title>
     <link rel="stylesheet" href="{{ asset('css/sanitize.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/common.css') }}" />

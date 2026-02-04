@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
+@section('ogp_image', asset('storage/' . $book->diagram_path))
 @section('title', $book->title . ' - 要約と図解')
+
+@push('ogp')
+    <meta property="og:image" content="{{ asset('storage/' . $book->diagram_path) }}" />
+@endpush
 
 @section('content')
 <article class="post-detail">
