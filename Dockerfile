@@ -26,6 +26,8 @@ COPY . .
 RUN chown -R www-data:www-data /var/www/html/src/storage /var/www/html/src/bootstrap/cache
 
 # ライブラリのインストール
-RUN cd src && composer install --no-dev --optimize-autoloader
+RUN cd src && \
+    rm -rf vendor && \
+    composer install --no-dev --optimize-autoloader
 
 EXPOSE 80
