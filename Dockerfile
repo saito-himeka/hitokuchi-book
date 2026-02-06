@@ -31,4 +31,5 @@ RUN cd src && composer install --no-dev --no-scripts --optimize-autoloader
 
 EXPOSE 80
 
-CMD cd src && php artisan migrate --force && apache2-foreground
+# 一度既存のテーブルを全て削除(fresh)してから、作り直し、初期データを投入(seed)する
+CMD sh -c "sleep 10 && cd src && php artisan migrate:fresh --seed --force && apache2-foreground"
