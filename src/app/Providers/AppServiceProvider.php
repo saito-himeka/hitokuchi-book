@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Schema; // ★ これを追加
+use Illuminate\Support\Facades\URL;
 use App\Models\Genre;
 use App\Models\Book;
 use Illuminate\Pagination\Paginator;
