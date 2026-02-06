@@ -1,14 +1,18 @@
+# --- ステージ1: CSS/JSをビルドする専用の部屋 ---
+FROM node:18 AS build-stage
+WORKDIR /app
+COPY . .
+# package.jsonがあるディレクトリ（src）に移動してビルド
+RUN cd src && npm install && npm run build
+
+# --- ステージ2: 本番用のPHPサーバーの部屋 ---
 FROM php:8.1-apache
 
-# 1. 必要なツールとNode.jsをインストール
-# curl を先に入れてから、Node.jsのリポジトリを追加します
+# 1. 必要なツールをインストール（Node.jsは不要になったので削除）
 RUN apt-get update && apt-get install -y \
-    curl \
     libzip-dev \
     unzip \
     libpq-dev \
-    && curl -sL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get install -y nodejs \
     && docker-php-ext-install pdo_pgsql zip
 
 # 2. Apache設定
@@ -21,19 +25,16 @@ RUN a2enmod rewrite
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
-COPY . .
+# ステージ1でビルドした成果物（CSSなど）を含むすべてのファイルをコピー
+COPY --from=build-stage /app .
 
 # 4. 権限設定
 RUN chown -R www-data:www-data /var/www/html/src/storage /var/www/html/src/bootstrap/cache
 
-# 5. npmライブラリのインストールとビルド
-# ViteによるCSS/JSのビルドを行います
-RUN cd src && npm install && npm run build
-
-# 6. PHPライブラリインストール
+# 5. PHPライブラリインストール
 RUN cd src && composer install --no-dev --no-scripts --optimize-autoloader
 
-# 7. 実行コマンド
-CMD ["sh", "-c", "cd /var/www/html/src && php artisan migrate:fresh --seed --force && apache2-foreground"]
+# 6. 実行コマンド
+CMD ["sh", "-c", "sleep 10 && cd /var/www/html/src && php artisan migrate:fresh --seed --force && apache2-foreground"]
 
 EXPOSE 80
