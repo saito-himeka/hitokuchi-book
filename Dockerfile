@@ -30,3 +30,5 @@ RUN chown -R www-data:www-data /var/www/html/src/storage /var/www/html/src/boots
 RUN cd src && composer install --no-dev --no-scripts --optimize-autoloader
 
 EXPOSE 80
+
+CMD cd src && php artisan migrate --force && apache2-foreground
