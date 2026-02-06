@@ -27,6 +27,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+        // テーブルが存在するか確認する安全装置を追加
+        if (Schema::hasTable('genres')) {
+            $genres = Genre::all();
+            View::share('genres', $genres);
+        }
+
         // 全てのビュー（.blade.php）に $genres を共有する
         View::share('genres', Genre::all());
 

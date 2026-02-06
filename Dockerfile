@@ -27,7 +27,6 @@ RUN chown -R www-data:www-data /var/www/html/src/storage /var/www/html/src/boots
 RUN cd src && composer install --no-dev --no-scripts --optimize-autoloader
 
 # 7. 実行コマンド（ここが最重要！）
-# 文字列を一つにまとめ、確実に順番に実行させます
-CMD ["sh", "-c", "cd /var/www/html/src && php artisan migrate:fresh --seed --force && apache2-foreground"]
+CMD sh -c "sleep 10 && php /var/www/html/src/artisan migrate:fresh --seed --force && apache2-foreground"
 
 EXPOSE 80
