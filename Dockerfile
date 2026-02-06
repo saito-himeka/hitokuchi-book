@@ -3,7 +3,7 @@ FROM node:18 AS build-stage
 WORKDIR /app
 COPY . .
 # package.jsonがあるディレクトリ（src）に移動してビルド
-RUN cd src && npm install && npm run build
+RUN cd src && npm install && npm run prod
 
 # --- ステージ2: 本番用のPHPサーバーの部屋 ---
 FROM php:8.1-apache
