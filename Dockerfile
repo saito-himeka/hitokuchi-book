@@ -1,14 +1,14 @@
 FROM php:8.1-apache
 
-# Node.jsをインストール（CSSビルドに必要）
-RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - && \
-    apt-get install -y nodejs
-
-# 1. 必要なライブラリをインストール
+# 1. 必要なツールとNode.jsをインストール
+# curl を先に入れてから、Node.jsのリポジトリを追加します
 RUN apt-get update && apt-get install -y \
+    curl \
     libzip-dev \
     unzip \
     libpq-dev \
+    && curl -sL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs \
     && docker-php-ext-install pdo_pgsql zip
 
 # 2. Apache設定
@@ -20,20 +20,20 @@ RUN a2enmod rewrite
 # 3. Composerインストール
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# 4. ファイルをコピー
 WORKDIR /var/www/html
 COPY . .
 
-# 5. 権限設定（先にやっておく）
+# 4. 権限設定
 RUN chown -R www-data:www-data /var/www/html/src/storage /var/www/html/src/bootstrap/cache
 
-# ★追加：npmライブラリのインストールとビルド
+# 5. npmライブラリのインストールとビルド
+# ViteによるCSS/JSのビルドを行います
 RUN cd src && npm install && npm run build
 
-# 6. ライブラリをインストール（スクリプトなしで確実に）
+# 6. PHPライブラリインストール
 RUN cd src && composer install --no-dev --no-scripts --optimize-autoloader
 
-# 7. 実行コマンド（ここが最重要！）
-CMD sh -c "sleep 10 && php /var/www/html/src/artisan migrate:fresh --seed --force && apache2-foreground"
+# 7. 実行コマンド
+CMD ["sh", "-c", "cd /var/www/html/src && php artisan migrate:fresh --seed --force && apache2-foreground"]
 
 EXPOSE 80
