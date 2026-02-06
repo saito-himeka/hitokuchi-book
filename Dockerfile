@@ -1,5 +1,9 @@
 FROM php:8.1-apache
 
+# Node.jsをインストール（CSSビルドに必要）
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs
+
 # 1. 必要なライブラリをインストール
 RUN apt-get update && apt-get install -y \
     libzip-dev \
@@ -22,6 +26,9 @@ COPY . .
 
 # 5. 権限設定（先にやっておく）
 RUN chown -R www-data:www-data /var/www/html/src/storage /var/www/html/src/bootstrap/cache
+
+# ★追加：npmライブラリのインストールとビルド
+RUN cd src && npm install && npm run build
 
 # 6. ライブラリをインストール（スクリプトなしで確実に）
 RUN cd src && composer install --no-dev --no-scripts --optimize-autoloader

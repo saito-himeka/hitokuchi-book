@@ -28,6 +28,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+        // 本番環境（Renderなど）ならHTTPSを強制する
+        if (config('app.env') === 'production') {
+            URL::forceScheme('https');
+        }
+
         // 1. ジャンル情報を共有（テーブルがある場合のみ）
         if (Schema::hasTable('genres')) {
             $genres = Genre::all();
