@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    {{-- 本番環境かつRenderでID設定がある場合のみ実行 --}}
+    @if(config('app.env') === 'production' && env('GOOGLE_ANALYTICS_ID'))
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ env('GOOGLE_ANALYTICS_ID') }}"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', '{{ env('GOOGLE_ANALYTICS_ID') }}');
+        </script>
+    @endif
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:site_name" content="ひとくちbook" />
