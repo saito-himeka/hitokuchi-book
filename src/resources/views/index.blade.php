@@ -37,13 +37,12 @@
                 <div class="product-card">
                     <div class="product-image">
                         <span class="badge">{{ $book->genre->name }}</span>
-                        @if($book->image_path)
-                            {{-- assetの代わりに Storage::url を使うのがLaravelの推奨です --}}
-                            <img src="{{ \Storage::url($book->image_path) }}" alt="{{ $book->title }}">
+                        @if(Str::startsWith($book->image_path, 'http'))
+                            <img src="{{ $book->image_path }}" alt="{{ $book->title }}">
                         @else
-                            <img src="https://via.placeholder.com/150x200?text=No+Image" alt="no image">
+                            <img src="{{ \Storage::url($book->image_path) }}" alt="{{ $book->title }}">
                         @endif
-                    </div>
+                                            </div>
 
                     <div class="product-info">
                         <p class="product-title">{{ $book->title }}</p>

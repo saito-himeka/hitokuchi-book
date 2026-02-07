@@ -112,7 +112,8 @@
                                 <a href="{{ route('book.show', $latest->id) }}" class="latest-post-item">
                                     <div class="latest-post-thumb">
                                         @if($latest->image_path)
-                                            <img src="{{ asset('storage/' . $latest->image_path) }}" alt="表紙">
+                                            {{-- 判定ロジックを追加 --}}
+                                            <img src="{{ \Illuminate\Support\Str::startsWith($latest->image_path, 'http') ? $latest->image_path : asset('storage/' . $latest->image_path) }}" alt="表紙">
                                         @endif
                                     </div>
                                     <div class="latest-post-info">
@@ -138,7 +139,7 @@
                     <h3 class="widget-title">About Me</h3>
                     <div class="profile-area">
                         <div class="profile-header">
-                            <img src="{{ asset('img/profile.jpg') }}" alt="管理人" class="profile-thumb">
+                            <img src="https://res.cloudinary.com/du7phxx7f/image/upload/v1770471892/%E7%84%A1%E9%A1%8C27_20260207223743_drw60q.png" alt="管理人" class="profile-thumb">
                             <p class="profile-name">うれん</p>
                         </div>
                         <p class="widget-text">
