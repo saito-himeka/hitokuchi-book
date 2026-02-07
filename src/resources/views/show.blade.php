@@ -1,10 +1,13 @@
 @extends('layouts.app')
 
-@section('ogp_image', asset('storage/' . $book->diagram_path))
+{{-- OGP画像も修正 --}}
+@section('ogp_image', $book->diagram_path ? \Storage::url($book->diagram_path) : asset('img/default-ogp.png'))
 @section('title', $book->title . ' - 要約と図解')
 
 @push('ogp')
-    <meta property="og:image" content="{{ asset('storage/' . $book->diagram_path) }}" />
+    @if($book->diagram_path)
+        <meta property="og:image" content="{{ \Storage::url($book->diagram_path) }}" />
+    @endif
 @endpush
 
 @section('content')
@@ -13,7 +16,8 @@
         <div class="post-header-flex">
             @if($book->image_path)
                 <div class="book-cover-small">
-                    <img src="{{ asset('storage/' . $book->image_path) }}" alt="表紙" style="width: 120px;">
+                    {{-- 表紙画像のパスを修正 --}}
+                    <img src="{{ \Storage::url($book->image_path) }}" alt="表紙" style="width: 120px;">
                 </div>
             @endif
 
@@ -34,8 +38,8 @@
         <h2>1枚でわかる！本の全体像</h2>
         <div class="infographic-container">
             @if($book->diagram_path)
-                {{-- zoomable-image クラスと ID を追加 --}}
-                <img src="{{ asset('storage/' . $book->diagram_path) }}" alt="図解" class="zoomable-image" id="diagramImage">
+                {{-- 図解画像のパスを修正 --}}
+                <img src="{{ \Storage::url($book->diagram_path) }}" alt="図解" class="zoomable-image" id="diagramImage">
                 <p class="zoom-hint">（クリックで拡大します）</p>
             @else
                 <p>図解画像は準備中です。</p>
@@ -54,6 +58,8 @@
     </section>
     @endif
 </article>
+
+
 
 @auth
 <div class="admin-actions">

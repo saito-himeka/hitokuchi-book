@@ -16,10 +16,10 @@ class DatabaseSeeder extends Seeder
     {
         // 1. あなたのアカウントを登録（メールとパスワードのみ）
         User::updateOrCreate(
-            ['email' => 'pafu1217@gmail.com'], // ★実際のアドレスに書き換え
+            ['email' => env('ADMIN_EMAIL')], 
             [
-                'name' => '管理者', // 名前項目はDB上必須なことが多いため、固定値を入れています
-                'password' => Hash::make('pafu2nya'), // ★実際のパスワードに書き換え
+                'name' => '管理者',
+                'password' => Hash::make(env('ADMIN_PASSWORD')), 
             ]
         );
 

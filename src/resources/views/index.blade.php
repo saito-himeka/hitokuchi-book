@@ -38,7 +38,8 @@
                     <div class="product-image">
                         <span class="badge">{{ $book->genre->name }}</span>
                         @if($book->image_path)
-                            <img src="{{ asset('storage/' . $book->image_path) }}" alt="{{ $book->title }}">
+                            {{-- assetの代わりに Storage::url を使うのがLaravelの推奨です --}}
+                            <img src="{{ \Storage::url($book->image_path) }}" alt="{{ $book->title }}">
                         @else
                             <img src="https://via.placeholder.com/150x200?text=No+Image" alt="no image">
                         @endif

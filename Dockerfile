@@ -35,6 +35,6 @@ RUN chown -R www-data:www-data /var/www/html/src/storage /var/www/html/src/boots
 RUN cd src && composer install --no-dev --no-scripts --optimize-autoloader
 
 # 6. 実行コマンド
-CMD ["sh", "-c", "sleep 10 && cd /var/www/html/src && php artisan migrate:fresh --seed --force && apache2-foreground"]
+CMD ["sh", "-c", "cd /var/www/html/src && php artisan storage:link && php artisan migrate:fresh --seed --force && apache2-foreground"]
 
 EXPOSE 80
